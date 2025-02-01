@@ -1,118 +1,142 @@
 <template>
-      <div class="grid">
-        <div class="col-12">
-          <div class="flex justify-content-end">
-            <Dropdown v-model="selectedDateRange" :options="dateRanges" optionLabel="label" placeholder="Select Date Range" @change="updateDashboard" />
-          </div>
-        </div>
-        <div class="col-12 md:col-6">
-          <Card title="Food Trend Data">
-            <Chart type="line" :data="foodTrendData" />
-          </Card>
-        </div>
-        <div class="col-12 md:col-6">
-          <Card title="Calorie Counts">
-            <div class="flex align-items-center">
-              <ProgressBar :value="dailyCalorieProgress" :showValue="false" class="mr-3" style="width: 100px; height: 100px" />
-              <div>
-                <p>Daily: {{ dailyCalories }} / {{ dailyCalorieGoal }} kcal</p>
-                <p>Weekly: {{ weeklyCalories }} / {{ weeklyCalorieGoal }} kcal</p>
-              </div>
-            </div>
-          </Card>
-        </div>
-        <div class="col-12 md:col-6">
-          <Card title="Exercise Levels">
-            <Chart type="bar" :data="exerciseData" />
-          </Card>
-        </div>
-        <div class="col-12 md:col-6">
-          <Card title="Key Analytics">
-            <p>Average Protein: {{ averageProtein }}g</p>
-            <p>Average Fat: {{ averageFat }}g</p>
-            <p>Average Carbs: {{ averageCarbs }}g</p>
-          </Card>
-        </div>
+  <div class="dashboard-container">
+    <div class="header">
+      <h1>Nutrition Dashboard</h1>
+      <Dropdown 
+        v-model="selectedRange" 
+        :options="dateRanges" 
+        optionLabel="label"
+        class="range-selector"
+      />
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <h3>Calories</h3>
+        <div class="metric-value">1,850</div>
+        <div class="metric-subtext">of 2,000 goal</div>
+        <ProgressBar :value="72" class="progress-bar" />
       </div>
-    </template>
 
-    <script setup>
-    import { ref, onMounted } from 'vue';
+      <div class="metric-card">
+        <h3>Protein</h3>
+        <div class="metric-value">95g</div>
+        <div class="metric-subtext">of 120g goal</div>
+        <ProgressBar :value="68" class="progress-bar" />
+      </div>
 
-    const selectedDateRange = ref(null);
-    const dateRanges = ref([
-      { label: 'Last 7 Days', value: 'last7Days' },
-      { label: 'Last 30 Days', value: 'last30Days' },
-      { label: 'Custom', value: 'custom' },
-    ]);
+      <div class="metric-card">
+        <h3>Carbs</h3>
+        <div class="metric-value">210g</div>
+        <div class="metric-subtext">of 250g goal</div>
+        <ProgressBar :value="84" class="progress-bar" />
+      </div>
 
-    // Dummy data for the charts and analytics
-    const foodTrendData = ref({});
-    const dailyCalorieProgress = ref(0);
-    const dailyCalories = ref(0);
-    const dailyCalorieGoal = ref(2000);
-    const weeklyCalories = ref(0);
-    const weeklyCalorieGoal = ref(14000);
-    const exerciseData = ref({});
-    const averageProtein = ref(0);
-    const averageFat = ref(0);
-    const averageCarbs = ref(0);
+      <div class="metric-card">
+        <h3>Fat</h3>
+        <div class="metric-value">65g</div>
+        <div class="metric-subtext">of 70g goal</div>
+        <ProgressBar :value="93" class="progress-bar" />
+      </div>
+    </div>
 
-    const updateDashboard = () => {
-      // Simulate fetching data based on selected date range
-      if (selectedDateRange.value === 'last7Days') {
-        foodTrendData.value = {
-          labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
-          datasets: [
-            {
-              label: 'Calories Consumed',
-              data: [1800, 1900, 2100, 2000, 2200, 2300, 2100],
-              borderColor: '#FFA726',
-              tension: 0.4,
-            },
-          ],
-        };
-        dailyCalories.value = 2100;
-        weeklyCalories.value = 14400;
-        averageProtein.value = 60;
-        averageFat.value = 80;
-        averageCarbs.value = 250;
-      } else if (selectedDateRange.value === 'last30Days') {
-        // Update with different dummy data
-        foodTrendData.value = {
-          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-          datasets: [
-            {
-              label: 'Calories Consumed',
-              data: [14000, 15000, 14500, 16000],
-              borderColor: '#42A5F5',
-              tension: 0.4,
-            },
-          ],
-        };
-        dailyCalories.value = 2200;
-        weeklyCalories.value = 15000;
-        averageProtein.value = 65;
-        averageFat.value = 75;
-        averageCarbs.value = 260;
-      }
+    <div class="chart-container">
+      <div class="main-chart">
+        <h3>Daily Intake Trend</h3>
+        <Chart type="line" :data="trendData" />
+      </div>
+    </div>
+  </div>
+</template>
 
-      dailyCalorieProgress.value = (dailyCalories.value / dailyCalorieGoal.value) * 100;
+<script setup>
+import { ref } from 'vue';
 
-      exerciseData.value = {
-        labels: ['Calories Consumed', 'Calories Burned'],
-        datasets: [
-          {
-            label: 'Exercise',
-            backgroundColor: ['#66BB6A', '#EF5350'],
-            data: [dailyCalories.value, 500],
-          },
-        ],
-      };
-    };
+const selectedRange = ref('week');
+const dateRanges = ref([
+  { label: 'Last 7 Days', value: 'week' },
+  { label: 'Last 30 Days', value: 'month' }
+]);
 
-    onMounted(() => {
-      selectedDateRange.value = 'last7Days';
-      updateDashboard();
-    });
-    </script>
+const trendData = ref({
+  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  datasets: [{
+    label: 'Calories',
+    data: [1800, 1950, 2100, 1850, 2200, 2050, 1900],
+    borderColor: '#48bb78',
+    tension: 0.4,
+    fill: false
+  }]
+});
+</script>
+
+<style scoped>
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.metric-card h3 {
+  color: #718096;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.metric-subtext {
+  color: #718096;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.progress-bar {
+  height: 6px;
+}
+
+.chart-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.chart-container h3 {
+  color: #2d3748;
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+</style>

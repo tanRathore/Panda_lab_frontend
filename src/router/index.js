@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router';
     import EditProfilePage from '../views/EditProfilePage.vue';
     import FoodLogEntryPage from '../views/FoodLogEntryPage.vue';
     import DashboardPage from '../views/DashboardPage.vue';
+    import SettingsPage from '../views/SettingsPage.vue';
 
     const routes = [
       {
@@ -36,6 +37,11 @@ import { createRouter, createWebHistory } from 'vue-router';
         path: '/dashboard',
         name: 'Dashboard',
         component: DashboardPage,
+      },
+      {
+        path: '/settings',
+        name: 'Settings',
+        component: SettingsPage,
       },
     ];
 

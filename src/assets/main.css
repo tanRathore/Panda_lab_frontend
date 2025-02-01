@@ -1,0 +1,64 @@
+/* Cronometer-style Variables */
+:root {
+    --crono-green: #00C853;
+    --crono-blue: #2962FF;
+    --crono-text: #2D3748;
+    --crono-bg: #F7FAFC;
+    --crono-card: #FFFFFF;
+    --crono-border: #E2E8F0;
+  }
+  
+  .dark-mode {
+    --crono-green: #00E676;
+    --crono-blue: #2979FF;
+    --crono-text: #EDF2F7;
+    --crono-bg: #1A202C;
+    --crono-card: #2D3748;
+    --crono-border: #4A5568;
+  }
+  
+  /* Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--crono-green);
+    border-radius: 3px;
+  }
+  
+  /* Global Styles */
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--crono-bg);
+    color: var(--crono-text);
+    line-height: 1.5;
+  }
+  
+  /* PrimeVue Overrides */
+  .p-card {
+    background: var(--crono-card);
+    border: 1px solid var(--crono-border) !important;
+    border-radius: 8px !important;
+  }
+  
+  .p-inputtext:focus {
+    box-shadow: 0 0 0 2px var(--crono-green) !important;
+    border-color: var(--crono-green) !important;
+  }
+  :root {
+    --primary-color: #48bb78;
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+    --background: #f0f4f8;
+    --surface: #ffffff;
+  }
+  
+  .dark-mode {
+    --primary-color: #48bb78;
+    --text-primary: #ffffff;
+    --text-secondary: #cbd5e0;
+    --background: #1a202c;
+    --surface: #2d3748;
+  }
